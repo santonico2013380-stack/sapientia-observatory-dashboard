@@ -1,0 +1,101 @@
+"system","country","university","original","median","ci_low","ci_high","ci_width","abs_shift"
+"ARWU","USA","Harvard U.",1,1,1,1,0,0
+"ARWU","USA","Stanford U.",2,3,2,4,2,1
+"ARWU","USA","U. California - Berkeley",3,3,3,3,0,0
+"ARWU","UK","U. Cambridge",4,4,2,5,3,0
+"ARWU","USA","Massachusetts Inst Tech (MIT)",5,5,4,5,1,0
+"ARWU","USA","California Inst Tech",6,6,6,7,1,0
+"ARWU","USA","Columbia U.",7,7,6,7,1,0
+"ARWU","USA","Princeton U.",8,9,8,11,3,1
+"ARWU","USA","U. Chicago",9,10,9,12,3,1
+"ARWU","UK","U. Oxford",10,9,9,10,1,1
+"ARWU","USA","Yale U.",11,11,9,11,2,0
+"ARWU","USA","Cornell U.",12,12,11,12,1,0
+"ARWU","USA","U. California - Los Angeles",13,13,13,13,0,0
+"ARWU","USA","U. California - San Diego",14,16,15,18,3,2
+"ARWU","USA","U. Pennsylvania",15,14,13,15,2,1
+"ARWU","USA","U. Washington — Seattle",16,18,17,20,3,2
+"ARWU","USA","U. Wisconsin - Madison",17,16,16,17,1,1
+"ARWU","USA","U. California - San Francisco",18,35,24,49,25,17
+"ARWU","Japan","Tokyo U.",19,23,21,25,4,4
+"ARWU","USA","Johns Hopkins U.",20,19,18,22,4,1
+"ARWU","USA","U. Michigan — Ann Arbor ( )",21,47,27,64,37,26
+"ARWU","UK","U. Coll London",22,20,19,22,3,2
+"ARWU","Japan","Kyoto U.",23,21,20,23,3,2
+"ARWU","Switzerland","Swiss Fed Inst Tech - Zurich",24,19,17,21,4,5
+"ARWU","Canada","U. Toronto",24,24,22,25,3,0
+"ARWU","USA","U. Illinois - Urbana Champaign",26,23,22,25,3,3
+"ARWU","UK","Imperial Coll London",27,24,23,26,3,3
+"ARWU","USA","U. Minnesota - Twin Cities",28,30,28,32,4,2
+"ARWU","USA","Washington U. — St. Louis",29,26,25,28,3,3
+"ARWU","USA","Northwestern U.",30,30,29,31,2,0
+"ARWU","USA","New York U.",31,31,28,32,4,0
+"ARWU","USA","Duke U. ( P )",32,57,35,80,45,25
+"ARWU","USA","Rockefeller U.",32,32,29,47,18,0
+"ARWU","USA","U. Colorado - Boulder",34,35,32,38,6,1
+"ARWU","Canada","U. British Columbia",35,33,32,35,3,2
+"ARWU","USA","U. California — Santa Barbara",36,60,46,74,28,24
+"ARWU","USA","U. Maryland — Coll Park",37,36,34,38,4,1
+"ARWU","USA","U. North Carolina — Chapel Hill",38,47,43,51,8,9
+"ARWU","USA","U. Texas - Austin",39,45,42,49,7,6
+"ARWU","UK","U. Manchester",40,39,37,42,5,1
+"ARWU","USA","U. Texas Southwestern Med Center",41,38,35,43,8,3
+"ARWU","USA","Pennsylvania State U. - U. Park C)",42,76,61,95,34,34
+"ARWU","France","U. Paris 06",42,42,39,47,8,0
+"ARWU","USA","Vanderbilt U.",42,38,36,42,6,4
+"ARWU","Denmark","U. Copenhagen",45,37,35,39,4,8
+"ARWU","USA","U. California — Irvine",46,65,54,78,24,19
+"ARWU","Netherlands","U. Utrecht",47,42,39,45,6,5
+"ARWU","USA","U. California - Davis (')",48,98,72,116,44,50
+"ARWU","France","U. Paris 11",49,49,43,64,21,0
+"ARWU","USA","U. Southern California",50,73,61,84,23,23
+"THES","USA","HARVARD U.",1,6,4,6,2,5
+"THES","USA","YALE U.",2,7,3,8,5,5
+"THES","UK","U. of CAMBRIDGE",3,3,2,3,1,0
+"THES","UK","U. of OXFORD",4,4,3,4,1,0
+"THES","USA","CALIFORNIA Institute of Technology (Calt..",5,6,5,8,3,1
+"THES","UK","IMPERIAL College London",6,3,2,5,3,3
+"THES","UK","UCL (U. College London)",7,4,3,5,2,3
+"THES","USA","U. of CHICAGO",8,8,8,10,2,0
+"THES","USA","MASSACHUSETTS Institute of Technology",9,18,12,24,12,9
+"THES","USA","COLUMBIA U.",10,22,12,31,19,12
+"THES","USA","U. of PENNSYLVANIA",11,11,10,12,2,0
+"THES","USA","PRINCETON U.",12,10,9,12,3,2
+"THES","USA","DUKE U.",13,30,17,43,26,17
+"THES","USA","JOHNS HOPKINS U.",13,32,18,45,27,19
+"THES","USA","CORNELL U.",15,30,15,41,26,15
+"THES","Australia","AUSTRALIAN National U.",16,11,10,16,6,5
+"THES","USA","STANFORD U.",17,35,23,47,24,18
+"THES","USA","U. of MICHIGAN",18,26,20,35,15,8
+"THES","Japan","U. ofTOKYO C)",19,55,30,81,51,36
+"THES","Canada","MCGILL U.",20,23,21,25,4,3
+"THES","USA","CARNEGIE MELLON U.",21,23,21,25,4,2
+"THES","UK","KING'S College London",22,16,13,18,5,6
+"THES","UK","U. of EDINBURGH",23,17,15,20,5,6
+"THES","Switzerland","ETH Zurich (Swiss Federal Institute of T..",24,17,14,24,10,7
+"THES","Japan","KYOTO U. ( 4 )",25,71,39,114,75,46
+"THES","Hong Kong","U. of HONG KONG",26,18,15,25,10,8
+"THES","USA","BROWN U.",27,37,33,49,16,10
+"THES","France","École Normale Supérieure, PARIS (+)",28,59,40,75,35,31
+"THES","UK","U. of MANCHESTER",29,23,20,27,7,6
+"THES","Singapore","National U. of SINGAPORE(NUS)",30,24,20,29,9,6
+"THES","USA","U. of CALIFORNIA, Los Angeles (U.. (*)",30,81,52,124,72,51
+"THES","UK","U. of BRISTOL",32,25,21,29,8,7
+"THES","USA","NORTHWESTERN U. (*)",33,55,40,72,32,22
+"THES","France","ÉCOLE POLYTECHNIQUE",34,28,26,34,8,6
+"THES","Canada","U. of BRITISH COLUMBIA( S )",34,59,39,75,36,25
+"THES","USA","U. of California, BERKELEY (*)",36,63,42,76,34,27
+"THES","Australia","The U. of SYDNEY",37,29,25,36,11,8
+"THES","Australia","The U. of MELBOURNE",38,37,35,41,6,1
+"THES","Hong Kong","HONG KONG U. of S & T.",39,21,18,32,14,18
+"THES","USA","NEW YORK U. (NYU) 0* )",40,73,53,94,41,33
+"THES","Canada","U. of TORONTO (+)",41,73,54,93,39,32
+"THES","Hong Kong","The CHINESE U. of Hong Kong",42,29,24,37,13,13
+"THES","Australia","U. of QUEENSLAND",43,32,29,40,11,11
+"THES","Japan","OSAKA U. C)",44,118,69,162,93,74
+"THES","Australia","U. of NEW SOUTH WALES",45,43,38,47,9,2
+"THES","USA","BOSTON U. C)",46,88,54,103,49,42
+"THES","Australia","MONASH U.",47,39,31,46,15,8
+"THES","Denmark","U. of COPENHAGEN",48,60,51,74,23,12
+"THES","Ireland","TRINITY College Dublin",49,38,34,49,15,11
+"THES","Switzerland","Ecole Polytech. Fédérale de LAUSANNE..",50,28,23,39,16,22

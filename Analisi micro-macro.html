@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Micro and Macro Analysis – Ranking Fragility and Stability</title>
+
+  <!-- Vega + Vega-Lite + vega-embed -->
+  <script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vega-lite@5"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
+
+  <style>
+    body {
+      font-family: system-ui, -apple-system, sans-serif;
+      margin: 20px;
+      background: #f7f7f7;
+    }
+    h1 {
+      font-weight: 600;
+    }
+    .chart-container {
+      background: white;
+      padding: 20px;
+      margin-bottom: 30px;
+      border-radius: 10px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+  </style>
+</head>
+
+<body>
+
+<h1>Micro and Macro Analysis – Distribution of Ranking Fragility</h1>
+
+<div class="chart-container">
+  <h2>Interactive Histogram of Fragility</h2>
+  <p>
+  This chart illustrates the <strong>fragility of university rankings</strong> by showing how many 
+  institutions fall into different widths of the confidence interval (<code>ci_width</code>) of their 
+  simulated rank. A small CI width indicates a stable and reliable position; a large CI width means the 
+  university could shift substantially across simulations, making any single-point rank statistically weak.
+</p>
+
+<p>
+  The maximum-CI slider allows users to explore how many universities remain “trustworthy” under stricter 
+  stability requirements. When the threshold is low, only a small fraction of institutions survive; when it 
+  is increased, the distribution quickly fills with highly unstable cases. Combined with the ARWU/THES 
+  filter, the chart highlights how different ranking systems produce different levels of uncertainty.
+</p>
+
+<p>
+  The purpose of this visualization is to show that <strong>most micro-level ranks are not precise</strong>, 
+  and that meaningful evaluation requires acknowledging uncertainty rather than relying on single, exact 
+  ranking positions.
+</p>
+  <p style="font-size:14px; background:#f0f0f0; padding:12px; border-left:4px solid #4C72B0; border-radius:6px;">
+  <strong>Note on ARWU / THES coverage and how this visualization handles it:</strong><br>
+  Universities do not appear in both ranking systems in a systematic way. A university 
+  may be present <em>only</em> in ARWU, <em>only</em> in THES, or in <em>both</em>. When a university is 
+  included in both systems, it contributes two independent observations: one coming 
+  from the ARWU simulation and one from the THES simulation. These are not duplicates, 
+  because the two ranking systems use different indicators, weighting schemes, and 
+  statistical procedures to generate ranks and confidence intervals.<br><br>
+
+  For this reason, we do not remove or merge these “duplicates”. They represent 
+  distinct pieces of information about the same institution under two different 
+  ranking methodologies. However, including both systems together in a single 
+  histogram can obscure this distinction and inflate the number of observations.  
+  To address this, the dashboard includes a dedicated filter (“Select ranking system”), 
+  which allows the user to explore ARWU data only, THES data only, or the combined 
+  distribution. In the combined view (“both”), color coding is used to clearly show 
+  which observations come from ARWU and which come from THES.
+</p>
+  <div id="chart-ciwidth"></div>
+<script>
+  const specCiWidth = {
+    "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+    "description": "Distribution of ranking fragility (ci_width) with system and CI filters.",
+
+    "data": {
+      "url": "df_univ_for_vega.csv"
+    },
+
+    "params": [
+      {
+        "name": "maxCI",
+        "value": 150,
+        "bind": {
+          "input": "range",
+          "min": 0,
+          "max": 150,
+          "step": 1,
+          "name": "Max CI width: "
+        }
+      },
+      {
+        "name": "rankingSystem",
+        "value": "both",
+        "bind": {
+          "input": "select",
+          "options": ["both", "ARWU", "THES"],
+          "name": "Select ranking system: "
+        }
+      }
+    ],
+
+    "transform": [
+      {
+        "filter":
+          "(rankingSystem === 'both') || (datum.system === rankingSystem)"
+      },
+      {
+        "filter": "datum.ci_width <= maxCI"
+      }
+    ],
+
+    "hconcat": [
+      {
+        "width": 500,
+        "mark": "bar",
+        "encoding": {
+          "x": {
+            "bin": {"maxbins": 40},
+            "field": "ci_width",
+            "type": "quantitative",
+            "title": "Confidence interval width (ci_width)"
+          },
+          "y": {
+            "aggregate": "count",
+            "title": "Number of universities"
+          },
+          "tooltip": [
+            {
+              "field": "ci_width",
+              "type": "quantitative",
+              "title": "CI width",
+              "format": ".1f"
+            },
+            {
+              "aggregate": "count",
+              "title": "Number of universities"
+            },
+            {
+              "field": "system",
+              "title": "System"
+            }
+          ],
+          "color": {
+            "field": "system",
+            "type": "nominal",
+            "title": "Ranking system",
+            "scale": { "scheme": "category10" }
+          }
+        }
+      },
+      {
+        "width": 220,
+        "mark": {
+          "type": "text",
+          "align": "left",
+          "baseline": "top",
+          "fontSize": 16
+        },
+        "transform": [
+          {
+            "aggregate": [
+              {"op": "count", "as": "n_univ"}
+            ]
+          },
+          {
+            "calculate": "'Selected universities: ' + datum.n_univ",
+            "as": "label"
+          }
+        ],
+        "encoding": {
+          "text": {"field": "label", "type": "nominal"}
+        }
+      }
+    ],
+
+    "config": {
+      "view": { "stroke": "transparent" },
+      "axis": { "labelFontSize": 12, "titleFontSize": 14 }
+    }
+  };
+  vegaEmbed("#chart-ciwidth", specCiWidth, {actions: false});
+</script>
+<p style="font-size:14px; background:#f0f0f0; padding:12px; border-left:4px solid #4C72B0; border-radius:6px;">
+  <strong>Interpretation and main conclusions:</strong><br>
+  This visualization shows that most universities exhibit a high degree of ranking 
+  uncertainty: their confidence intervals are wide, and thus their exact micro-level 
+  positions in the ranking are statistically fragile. Only a small subset of institutions 
+  remains stable under strict CI-width thresholds, while the majority shows substantial 
+  variation across simulations. The system filter highlights an additional pattern: 
+  ARWU tends to produce narrower (more stable) intervals, whereas THES often displays 
+  greater volatility. Together, these results reinforce the idea that meaningful ranking 
+  analysis must incorporate uncertainty explicitly rather than relying on single, 
+  fixed numerical positions.
+</p>
+</div>
+<!-- ===================== MICRO vs MACRO SCATTER: ci_width vs abs_shift ===================== -->
+
+<div class="chart-container">
+  <h2>Micro vs Macro – CI Width vs Rank Shift</h2>
+
+  <p>
+    After examining the <strong>micro-level</strong> results — where individual universities 
+    showed substantial volatility and large confidence intervals — this second step moves the 
+    analysis to the <strong>macro level</strong> (countries and regions). The purpose of placing 
+    both micro and macro observations in the same visualization is to highlight how aggregation 
+    drastically increases ranking stability and reduces statistical noise. While micro-level 
+    ranks fluctuate widely across simulations, macro-level ranks tend to converge, producing 
+    narrower confidence intervals and smaller deviations from their median simulated positions.
+  </p>
+
+  <p>
+    This scatter plot provides a direct comparison of the two stability regimes. 
+    The <strong>x-axis</strong> reports the width of the confidence interval (<code>ci_width</code>), 
+    which measures how much a ranking can vary across simulations (volatility). 
+    The <strong>y-axis</strong> reports the absolute difference between the original rank and the 
+    median simulated rank (<code>abs_shift</code>), which captures how far the “official” rank 
+    is from the typical position emerging from the statistical model (systematic deviation).
+  </p>
+
+  <p style="font-size:14px; background:#f0f0f0; padding:12px; border-left:4px solid #4C72B0; border-radius:6px;">
+    <strong>How to read this chart:</strong><br>
+    Use the ranking-system filter (ARWU / THES / both) to isolate the contribution of each 
+    methodology. The aggregation filter lets you focus on micro data only, macro data only, 
+    or both simultaneously. The sliders restrict the maximum CI width and the maximum rank 
+    shift displayed, allowing you to zoom into the most stable part of the distribution. 
+    The key message is that macro observations cluster in the bottom-left region (low CI 
+    width and low rank shift), while micro observations are much more dispersed, confirming 
+    that system-level rankings are inherently more stable than single-institution ranks.
+  </p>
+
+  </p>
+  <p style="font-size:14px; background:#f0f0f0; padding:12px; border-left:4px solid #4C72B0; border-radius:6px;">
+  <strong>Note on structural choices for the construction of the graph:</strong><br>
+  Universities do not appear in both ranking systems in a systematic way. A university 
+  may be present <em>only</em> in ARWU, <em>only</em> in THES, or in <em>both</em>. When a university is 
+  included in both systems, it contributes two independent observations: one coming 
+  from the ARWU simulation and one from the THES simulation. These are not duplicates, 
+  because the two ranking systems use different indicators, weighting schemes, and 
+  statistical procedures to generate ranks and confidence intervals.<br><br>
+
+  Using <code>ci_width</code> and <code>abs_shift</code> together is essential: the two axes 
+  represent complementary dimensions of uncertainty. A point far to the right indicates 
+  a ranking that is <em>unstable</em>, whereas a point high on the chart indicates a ranking 
+  whose official value is <em>potentially misleading</em> because it differs from the 
+  distribution’s central tendency. Plotting micro and macro observations in the same 
+  two-dimensional space visually reveals the strong clustering effect: macro-level ranks 
+  concentrate near the origin (low volatility and low deviation), whereas micro-level ranks 
+  spread widely across both axes, confirming their fragility.
+</p>
+
+  <div id="chart-scatter-ci-abs"></div>
+
+  <p style="font-size:14px; background:#f0f0f0; padding:12px; border-left:4px solid #4C72B0; border-radius:6px;">
+  <strong>Interpretation and main conclusions:</strong><br>
+  The scatter plot clearly shows the emergence of <strong>two distinct clusters</strong>. 
+  Micro-level observations (universities) occupy a wide and diffuse region of the chart, 
+  characterized by <em>large confidence interval widths</em> (x-axis) and 
+  <em>large rank shifts</em> between the original and median simulated rank (y-axis). 
+  This indicates that individual institutions experience substantial volatility and that 
+  their reported positions can deviate significantly from the ranking’s statistically 
+  representative value.
+  <br><br>
+  In contrast, macro-level observations (countries and regions) form a compact cluster 
+  located near the origin: their confidence intervals are narrow and their rank shifts are 
+  minimal. This demonstrates that <strong>aggregation dramatically increases ranking stability</strong>: 
+  when data are grouped at a higher level, the noise inherent in micro-level measurements 
+  is averaged out, producing far more reliable and interpretable outcomes.
+  <br><br>
+  Overall, the visualization reinforces a key conclusion: 
+  <strong>macro-level rankings are substantially more trustworthy than micro-level rankings</strong>, 
+  both in terms of volatility and systematic deviation. For the development of the 
+  <em>Sapientia Observatory</em>, this suggests that composite or aggregated indicators may 
+  offer a more robust basis for evaluation than highly granular, institution-level rankings 
+  that are statistically fragile and sensitive to small perturbations in the model.
+</p>
+
+</div>
+
+<script>
+  const specScatterCiAbs = {
+    "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+    "description": "Scatter plot of ci_width vs abs_shift, comparing micro and macro observations.",
+
+    "params": [
+      {
+        "name": "scatterSystem",
+        "value": "both",
+        "bind": {
+          "input": "select",
+          "options": ["both", "ARWU", "THES"],
+          "name": "Select ranking system: "
+        }
+      },
+      {
+        "name": "scatterAggregation",
+        "value": "both",
+        "bind": {
+          "input": "select",
+          "options": ["both", "micro", "macro"],
+          "name": "Show: "
+        }
+      },
+      {
+        "name": "scatterMaxCI",
+        "value": 80,
+        "bind": {
+          "input": "range",
+          "min": 0,
+          "max": 80,
+          "step": 1,
+          "name": "Max CI width: "
+        }
+      },
+      {
+        "name": "scatterMaxShift",
+        "value": 80,
+        "bind": {
+          "input": "range",
+          "min": 0,
+          "max": 80,
+          "step": 1,
+          "name": "Max rank shift (abs_shift): "
+        }
+      }
+    ],
+
+    "layer": [
+      {
+        // MICRO: university-level points
+        "data": { "url": "df_univ_for_vega.csv" },
+        "transform": [
+          {
+            "filter":
+              "(scatterSystem === 'both') || (datum.system === scatterSystem)"
+          },
+          {
+            "filter":
+              "(scatterAggregation === 'both') || (scatterAggregation === 'micro')"
+          },
+          {
+            "filter":
+              "datum.ci_width <= scatterMaxCI && datum.abs_shift <= scatterMaxShift"
+          },
+          {
+            "calculate": "'Micro (universities)'",
+            "as": "aggregation_level"
+          }
+        ],
+        "mark": {
+          "type": "circle",
+          "opacity": 0.4
+        },
+        "encoding": {
+          "x": {
+            "field": "ci_width",
+            "type": "quantitative",
+            "title": "Confidence interval width (ci_width)"
+          },
+          "y": {
+            "field": "abs_shift",
+            "type": "quantitative",
+            "title": "Rank shift |original − median| (abs_shift)"
+          },
+          "color": {
+            "field": "aggregation_level",
+            "type": "nominal",
+            "title": "Aggregation level",
+            "scale": { "scheme": "set1" }
+          },
+          "tooltip": [
+            {"field": "university", "type": "nominal", "title": "University"},
+            {"field": "country", "type": "nominal", "title": "Country"},
+            {"field": "system", "type": "nominal", "title": "System"},
+            {
+              "field": "ci_width",
+              "type": "quantitative",
+              "title": "CI width",
+              "format": ".1f"
+            },
+            {
+              "field": "abs_shift",
+              "type": "quantitative",
+              "title": "Rank shift (abs_shift)",
+              "format": ".1f"
+            }
+          ],
+          "size": { "value": 35 }
+        }
+      },
+      {
+        // MACRO: country/region-level points
+        "data": { "url": "df_macro_for_vega.csv" },
+        "transform": [
+          {
+            "filter":
+              "(scatterSystem === 'both') || (datum.system === scatterSystem)"
+          },
+          {
+            "filter":
+              "(scatterAggregation === 'both') || (scatterAggregation === 'macro')"
+          },
+          {
+            "filter":
+              "datum.ci_width <= scatterMaxCI && datum.abs_shift <= scatterMaxShift"
+          },
+          {
+            "calculate": "'Macro (countries / regions)'",
+            "as": "aggregation_level"
+          }
+        ],
+        "mark": {
+          "type": "circle",
+          "opacity": 0.9
+        },
+        "encoding": {
+          "x": {
+            "field": "ci_width",
+            "type": "quantitative",
+            "title": "Confidence interval width (ci_width)"
+          },
+          "y": {
+            "field": "abs_shift",
+            "type": "quantitative",
+            "title": "Rank shift |original − median| (abs_shift)"
+          },
+          "color": {
+            "field": "aggregation_level",
+            "type": "nominal",
+            "title": "Aggregation level",
+            "scale": { "scheme": "set1" }
+          },
+          "shape": {
+            "field": "group_type",
+            "type": "nominal",
+            "title": "Macro type",
+            "legend": {"title": "Macro type (countries / regions)"}
+          },
+          "tooltip": [
+            {"field": "area", "type": "nominal", "title": "Area"},
+            {"field": "group_type", "type": "nominal", "title": "Group type"},
+            {"field": "level", "type": "nominal", "title": "Top-X level"},
+            {"field": "system", "type": "nominal", "title": "System"},
+            {
+              "field": "ci_width",
+              "type": "quantitative",
+              "title": "CI width",
+              "format": ".1f"
+            },
+            {
+              "field": "abs_shift",
+              "type": "quantitative",
+              "title": "Rank shift (abs_shift)",
+              "format": ".1f"
+            }
+          ],
+          "size": { "value": 70 }
+        }
+      }
+    ],
+
+    "config": {
+      "view": { "stroke": "transparent" },
+      "axis": { "labelFontSize": 12, "titleFontSize": 14 }
+    }
+  };
+
+  vegaEmbed("#chart-scatter-ci-abs", specScatterCiAbs, {actions: false});
+</script>
+</body>
+</html>
